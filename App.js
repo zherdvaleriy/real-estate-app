@@ -9,6 +9,7 @@ import BuyScreen from './src/screens/BuyScreen.jsx';
 import RentScreen from './src/screens/RentScreen.jsx';
 import LoginScreen from './src/screens/LoginScreen.jsx';
 import RegisterScreen from './src/screens/RegisterScreen.jsx';
+import ContactScreen from './src/screens/ContactScreen.jsx';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,8 @@ const App = () => {
         <Stack.Screen name="RentScreen" component={RentScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="Contact" component={ContactScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

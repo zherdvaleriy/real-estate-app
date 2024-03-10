@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer')
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
 const {User} = require('./models.js')
+const routes = require('./routes')
 
 
 
@@ -16,6 +17,8 @@ const port = 8550
 app.use(cors())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
+
+
 
 mongoose.connect('mongodb+srv://valerio:valerio@cluster0.cclrdmg.mongodb.net/real-estate-app').then(() => {
     console.log('Connected to MongoDB')
@@ -130,3 +133,4 @@ app.post('/login', async(req, res) => {
     }
 })
 
+app.use('/', routes)

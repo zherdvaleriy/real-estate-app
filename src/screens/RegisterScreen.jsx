@@ -42,7 +42,18 @@ const RegisterScreen = () => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
-      <Image source={require('../assets/logo.png')} style={styles.logo}/>
+
+      <Pressable onPress={() => navigation.navigate('HomeScreen')}>
+
+            <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+
+              <AntDesign style={{top: -2.6, left: -100}} name="arrowleft" size={24} color="black"onPress={navigation.goBack}/>
+              <Image source={require('../assets/logo.png')} style={styles.logo} />
+
+            </View>
+
+       </Pressable>
+
       <KeyboardAvoidingView>
         <View style={{alignItems: 'center'}} >
           <Text style={{fontSize: 17,fontWeight: 'bold', marginTop: 12, color: '#041e42' }} >Register to your Account</Text>

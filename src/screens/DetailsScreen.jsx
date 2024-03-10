@@ -24,7 +24,7 @@ const DetailsScreen = ({navigation, route}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.white}}>
       <View style={styles.backgroundImageContainer}>
-        <ImageBackground style={styles.backgroundImage} source={{uri:house.image}} >
+        <ImageBackground style={styles.backgroundImage} source={{uri:house?.image}} >
           <View style={styles.header}>
 
           <View style={styles.headerBtn}>
@@ -40,10 +40,10 @@ const DetailsScreen = ({navigation, route}) => {
 
        </View>
                 <View style={{ paddingHorizontal: 20}} >
-                      <Text style={{textAlign: 'left',color: '#1f3e72', padding:5,fontSize:19, fontWeight:700}} >{house.title} </Text>
+                      <Text style={{textAlign: 'left',color: '#1f3e72', padding:5,fontSize:19, fontWeight:700}} >{house?.title} </Text>
                         <View style={{flexDirection: 'row', paddingHorizontal:5}}>
                             <Text style={{color: 'orange'}}>$</Text>
-                            <Text style={{textAlign: 'left', color:'gray', fontWeight:  700}} > {house.price} </Text>
+                            <Text style={{textAlign: 'left', color:'gray', fontWeight:  700}} > {house?.price} </Text>
                         </View>
     
     
@@ -62,14 +62,14 @@ const DetailsScreen = ({navigation, route}) => {
                             </View>
                           </View>
     
-                        <Text style={{marginLeft:5, marginTop: 10, fontSize:15}}>{house.description}</Text>
+                        <Text style={{marginLeft:5, marginTop: 10, fontSize:15}}>{house?.description}</Text>
     
                    </View>
 
                 <View style={{flexDirection: 'row',alignItems: 'center', gap: 20, marginLeft: 22, marginTop:25}} >
                   <FontAwesome6 name="location-dot" size={24} color="black" />
                 
-                  <Text style={{color: COLORS.grey}}>{house.address} {house.city} {house.country} </Text>
+                  <Text style={{color: COLORS.grey}}>{house?.address} {house?.city} {house?.country} </Text>
                    
                 </View>   
 
@@ -113,7 +113,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -20
+    marginTop: -20,
+   
   },
   facilitiesContainer: {
     flexDirection: 'row',

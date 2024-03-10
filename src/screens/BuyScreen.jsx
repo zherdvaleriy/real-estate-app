@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, ScrollView, SafeAreaView, Platform, Pressable, Image, FlatList } from 'react-native'
-import React, {useState} from 'react'
-import data from '../../data.json'
+import React, {useState, useEffect} from 'react'
+// import data from '../../data.json'
 import { AntDesign } from '@expo/vector-icons';
 import { EvilIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -10,16 +10,28 @@ import Card from '../components/Card';
 
 
 
-const BuyScreen = ({navigation}) => {
+// const BuyScreen = ({navigation}) => {
 
-    const [columns, setColumns] = useState(2);
+//     const [columns, setColumns] = useState(2);
 
-    const truncate = (text, { length }) => {
-        if (text.length > length) {
-           return text.substring(0, length) + '...';
-        }
-        return text;
-       }
+//     const truncate = (text, { length }) => {
+//         if (text.length > length) {
+//            return text.substring(0, length) + '...';
+//         }
+//         return text;
+//        }
+
+
+const BuyScreen = ({ navigation }) => {
+   const [residencies, setResidencies] = useState([]);
+   const [columns, setColumns] = useState(2);
+
+   useEffect(() => {
+       fetch('http://192.168.178.34:8550/residencies', {timeout: 5000})
+           .then(response => response.json())
+           .then(data => setResidencies(data))
+           .catch(error => console.error(error));
+   }, []);
     
 
   return (
@@ -37,7 +49,8 @@ const BuyScreen = ({navigation}) => {
              contentContainerStyle={{paddingLeft: 20, paddingVertical: 20}}
              showsHorizontalScrollIndicator={false}
              numColumns={columns}
-             data={data}
+             data={residencies}
+            //  data={data}
             //  data={data.slice(0, 8)} // if we want to limit the number of houses displayed
              renderItem={({item}) => <Card house={item} navigation={navigation} />} 
              style={{ marginTop:0}}

@@ -4,14 +4,13 @@ import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-import data from '../../data.json'
+// // import data from '../../data.json'
 
 
 
 
 
-
-const Card = ({house,navigation}) => {
+const Card = React.memo(({house,navigation}) => {
 
     const truncate = (text, { length }) => {
        if (text.length > length) {
@@ -19,6 +18,8 @@ const Card = ({house,navigation}) => {
        }
        return text;
       }
+
+
 
     return (
        <View style={{flexDirection: 'row', alignItems: 'center',justifyContent: 'center', flexWrap: 'wrap', gap:30, padding: 10, paddingTop: 0}} >
@@ -45,15 +46,15 @@ const Card = ({house,navigation}) => {
                         <View style={styles.facilitiesContainer}>
                             <View style={styles.facility}>
                             <FontAwesome name="bath" size={18} color="#1f3e72" />
-                              <Text>{house?.facilities?.bathrooms}</Text>
+                              <Text>{house?.facilities?.bathrooms || 0}</Text>
                             </View>
                             <View style={styles.facility}>
                             <FontAwesome name="bed" size={18} color="#1f3e72" />
-                              <Text>{house?.facilities?.bedrooms}</Text>
+                              <Text>{house?.facilities?.bedrooms || 0}</Text>
                             </View>
                             <View style={styles.facility}>
                              <MaterialIcons name="garage" size={18} color="#1f3e72" />
-                              <Text>{house?.facilities?.parkings}</Text>
+                              <Text>{house?.facilities?.parkings || 0}</Text>
                             </View>
                           </View>
     
@@ -64,7 +65,7 @@ const Card = ({house,navigation}) => {
           
         
        )
-    }
+    })
     
     const styles = StyleSheet.create({
     
@@ -110,3 +111,6 @@ const Card = ({house,navigation}) => {
     });
     
     export default Card;
+
+
+

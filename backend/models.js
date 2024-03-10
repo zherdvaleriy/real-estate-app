@@ -96,8 +96,8 @@ const residencySchema = new mongoose.Schema({
     country: String,
     image: String,
     facilities: {
-        type: [String],
-        default: [],
+        type: JSON,
+
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,

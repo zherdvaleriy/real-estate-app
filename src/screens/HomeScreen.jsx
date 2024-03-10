@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, Pressable, Image, FlatList ,ScrollView, TextInput, Dimensions} from 'react-native'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import COLORS from '../constants/colors'
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -19,6 +19,8 @@ const HomeScreen = () => {
 
     const categoryList = ['Popular', 'Recommended', 'Nearest']
 
+
+
     return (
       <View style={styles.categoryListContainer} >
           {categoryList.map((category, index) => (
@@ -31,6 +33,17 @@ const HomeScreen = () => {
       </View>
   )
   }
+
+  const [residencies, setResidencies] = useState([]);
+  useEffect(() => {
+    fetch('http://192.168.178.34:8550/residencies', {timeout: 5000})
+        .then(response => response.json())
+        .then(data => setResidencies(data))
+        .catch(error => console.error(error));
+}, []);
+
+
+
   return (
     <SafeAreaView style={{backgroundColor: COLORS.white, flex: 1}} >
       <StatusBar 
@@ -55,12 +68,21 @@ const HomeScreen = () => {
            style={styles.profileImage}
            source={require('../assets/person.jpg')} 
         /> */}
+        <Pressable 
+              style={{backgroundColor: '#0E4C92', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 5}}
+              onPress={() => navigation.navigate('Contact')}
+              >
 
+           <Text style={{color: 'white', fontWeight: '600', fontSize: 16}} >Contact Us</Text>
+
+        </Pressable>
         <Pressable onPress={() => navigation.navigate('Login')}>
 
            <FontAwesome name="user-circle-o" size={40} color="black" />
 
         </Pressable>
+
+
 
       </View>
 
@@ -87,7 +109,8 @@ const HomeScreen = () => {
              contentContainerStyle={{paddingLeft: 20, paddingVertical: 20}}
              showsHorizontalScrollIndicator={false}
              horizontal
-             data={data}
+             data={residencies}
+            //  data={data}
             //  data={data.slice(0, 8)} // if we want to limit the number of houses displayed
              renderItem={({item}) => <Card house={item} navigation={navigation} />} 
              style={{ marginTop:10}}

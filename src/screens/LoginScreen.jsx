@@ -13,23 +13,31 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
     const navigation = useNavigation();
 
     useEffect(() => {
-      const checkLoginStatus = async () => {
-        try {
-          const token = await AsyncStorage.getItem('authToken')
-          if(token){
-            navigation.replace('Main')
+        const checkLoginStatus = async () => {
+          try {
+            const token = await AsyncStorage.getItem('authToken');
+            if (token) {
+              // Send a request to validate the token
+              const response = await axios.post('http://192.168.178.34:8550/validateToken', { token });
+              if (response.data.valid) {
+                // Token is valid, navigate to BuyScreen
+                navigation.navigate('BuyScreen');
+              } else {
+                // Token is invalid, remove it from AsyncStorage
+                await AsyncStorage.removeItem('authToken');
+              }
+            }
+          } catch (error) {
+            console.log('error message', error);
           }
-
-        } catch (error) {
-          console.log('error message', error)
-        }
-      }
-      checkLoginStatus()
-    },[])
+        };
+        checkLoginStatus();
+      }, []);
 
 
     const handleLogin = () => {
@@ -43,7 +51,8 @@ const LoginScreen = () => {
 
             const token = response.data.token;
             AsyncStorage.setItem('authToken', token);
-            navigation.navigate('DetailsScreen');
+            setIsLoggedIn(true);
+            navigation.navigate('BuyScreen');
 
         }).catch((error) => {
             Alert.alert('Login Error', 'Invalid Email');
@@ -51,10 +60,34 @@ const LoginScreen = () => {
         });
     };
 
+    const handleLogout = async () => {
+        await AsyncStorage.removeItem('authToken');
+        setIsLoggedIn(false);
+    };
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
-            <Image source={require('../assets/logo.png')} style={styles.logo} />
-            <KeyboardAvoidingView>
+
+            <Pressable onPress={() => navigation.navigate('HomeScreen')}>
+
+                <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+
+                   <AntDesign style={{top: -2.6, left: -100}} name="arrowleft" size={24} color="black"onPress={navigation.goBack}/>
+                   <Image source={require('../assets/logo.png')} style={styles.logo} />
+
+                </View>
+
+            </Pressable>
+
+             <KeyboardAvoidingView>
+
+            {isLoggedIn ? (
+
+                    <Pressable onPress={handleLogout} style={styles.btn}>
+                    <Text style={styles.btnText}>Logout</Text>
+                    </Pressable>
+            ) : (
+             <>
                 <View style={{ alignItems: 'center' }}>
                     <Text style={{ fontSize: 17, fontWeight: 'bold', marginTop: 12, color: '#041e42' }}>Login</Text>
                 </View>
@@ -101,7 +134,10 @@ const LoginScreen = () => {
                 <Pressable onPress={() => navigation.navigate('Register')} style={{ marginTop: 15 }}>
                     <Text style={{ textAlign: 'center', color: 'gray', fontSize: 16 }}>Don't have an account? Sign up!</Text>
                 </Pressable>
+            </>
+                )}
             </KeyboardAvoidingView>
+            
         </SafeAreaView>
     );
 };

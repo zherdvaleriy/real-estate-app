@@ -27,7 +27,7 @@ const Card = React.memo(({house,navigation}) => {
                 <Pressable 
                       onPress={() => {navigation.navigate('DetailsScreen', {house: house})}}
                       key={house._id} 
-                      style={{position: 'relative'}} 
+                      style={{position: 'relative', backgroundColor: 'lightgray', paddingHorizontal:12, paddingBottom: 12, borderRadius: 5}} 
                       >
                   <AntDesign style={styles.heart} name="heart" size={18} color="blue" />
                   <Image 

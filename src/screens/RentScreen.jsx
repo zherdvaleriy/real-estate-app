@@ -41,7 +41,7 @@ const RentScreen = ({navigation}) => {
            <FlatList 
            
              keyExtractor={(_,key) => key.toString()}
-             contentContainerStyle={{paddingLeft: 20, paddingVertical: 20}}
+             contentContainerStyle={{paddingLeft: 2, paddingVertical: 20}}
              showsHorizontalScrollIndicator={false}
              numColumns={columns}
              data={residencies}

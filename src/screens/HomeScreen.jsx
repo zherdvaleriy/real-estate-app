@@ -12,78 +12,176 @@ const {width} = Dimensions.get('screen')
 
 
 
+// const HomeScreen = () => {
+//    const navigation = useNavigation()
+//   const ListCategories = () => {
+//     const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0)
+
+//     const categoryList = ['Popular', 'Recommended', 'Nearest']
+
+
+//     return (
+//       <View style={styles.categoryListContainer} >
+//           {categoryList.map((category, index) => (
+//               <Pressable key={index} onPress={() => setSelectedCategoryIndex(index)} >
+
+//                   <Text style={[styles.categoryListText, index == selectedCategoryIndex && styles.activeCategoryListText]} >{category} </Text>
+
+//               </Pressable>
+//           ))}
+//       </View>
+//   )
+//   }
+
+//   const [residencies, setResidencies] = useState([]);
+//   useEffect(() => {
+//     fetch('http://192.168.178.34:8550/residencies', {timeout: 5000})
+//         .then(response => response.json())
+//         .then(data => setResidencies(data))
+//         .catch(error => console.error(error));
+// }, []);
+
+
+
+//   return (
+//     <SafeAreaView style={{backgroundColor: COLORS.white, flex: 1}} >
+//       <StatusBar 
+//            backgroundColor={COLORS.white}
+//            translucent={false}
+//            barStyle='dark-content'
+//         />
+//       <Pressable onPress={() => navigation.navigate('OnBoardScreen')} >
+
+//         <View style={{ padding: 12}}>
+//             <Image source={require('../assets/logo.png')} style={styles.logo} />
+//         </View>
+
+//       </Pressable>
+
+//       <View style={styles.header} >
+//         <View>
+//           <Text style={{color: 'gray'}}>Location</Text>
+//           <Text style={{color: COLORS.dark, fontSize: 20, fontWeight: 'bold'}}>Germany</Text>
+//         </View>
+//         {/* <Image 
+//            style={styles.profileImage}
+//            source={require('../assets/person.jpg')} 
+//         /> */}
+//         <Pressable 
+//               style={{backgroundColor: '#0E4C92', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 5}}
+//               onPress={() => navigation.navigate('Contact')}
+//               >
+
+//            <Text style={{color: 'white', fontWeight: '600', fontSize: 16}} >Contact Us</Text>
+
+//         </Pressable>
+//         <Pressable onPress={() => navigation.navigate('Login')}>
+
+//            <FontAwesome name="user-circle-o" size={40} color="black" />
+
+//         </Pressable>
+
+
+
+//       </View>
+
+//       <ScrollView>
+//         <View style={{
+//           flexDirection: 'row',
+//           justifyContent: 'space-between',
+//           paddingHorizontal: 20,
+//         }} >
+//           <View style={styles.searchInputContainer}>
+//             <FontAwesome name="search" size={24} color="gray" style={{left: -120, top: 12}} />
+//             <TextInput placeholder='Search your residency...' style={{top: -12}} />
+//           </View>
+//           <View style={styles.sortBtn} >
+//           <MaterialIcons name="tune" size={26} color="white" />
+//           </View>
+//         </View>
+//         <ListOptions/>
+//         <ListCategories/>
+
+//         <FlatList 
+//              snapToInterval={width -20}
+//              keyExtractor={(_,key) => key.toString()}
+//              contentContainerStyle={{paddingLeft: 2, paddingVertical: 10}}
+//              showsHorizontalScrollIndicator={false}
+//              horizontal
+//              data={residencies}
+//             //  data={data}
+//             //  data={data.slice(0, 8)} // if we want to limit the number of houses displayed
+//              renderItem={({item}) => <Card house={item} navigation={navigation} />} 
+//              style={{ marginTop:10}}
+//              />
+
+//              <View>
+//                 <Image style={{width: '100%', height: 300, resizeMode: 'contain', paddingVertical: 5}}  source={require('../assets/urban-image1.jpg')} />
+//              </View>
+
+//       </ScrollView>
+//     </SafeAreaView>
+//   )
+// }
+
+// export default HomeScreen
+
+
+
+
 const HomeScreen = () => {
-   const navigation = useNavigation()
-  const ListCategories = () => {
-    const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0)
+ const navigation = useNavigation();
+ const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
+ const [residencies, setResidencies] = useState([]);
 
-    const categoryList = ['Popular', 'Recommended', 'Nearest']
+ useEffect(() => {
+    fetch('http://192.168.178.34:8550/residencies', { timeout: 5000 })
+      .then(response => response.json())
+      .then(data => setResidencies(data))
+      .catch(error => console.error(error));
+ }, []);
 
+ const categoryList = ['Popular', 'Recommended', 'Nearest'];
 
+ // Function to filter residencies based on the selected category
+ const filterResidencies = () => {
+    switch (selectedCategoryIndex) {
+      case 1: // Recommended
+        return residencies.filter(residency => residency.recommended);
+      case 2: // Nearest
+        return residencies.filter(residency => residency.nearest);
+      default: // Popular
+        return residencies;
+    }
+ };
 
-    return (
-      <View style={styles.categoryListContainer} >
-          {categoryList.map((category, index) => (
-              <Pressable key={index} onPress={() => setSelectedCategoryIndex(index)} >
-
-                  <Text style={[styles.categoryListText, index == selectedCategoryIndex && styles.activeCategoryListText]} >{category} </Text>
-
-              </Pressable>
-          ))}
-      </View>
-  )
-  }
-
-  const [residencies, setResidencies] = useState([]);
-  useEffect(() => {
-    fetch('http://192.168.178.34:8550/residencies', {timeout: 5000})
-        .then(response => response.json())
-        .then(data => setResidencies(data))
-        .catch(error => console.error(error));
-}, []);
-
-
-
-  return (
-    <SafeAreaView style={{backgroundColor: COLORS.white, flex: 1}} >
-      <StatusBar 
-           backgroundColor={COLORS.white}
-           translucent={false}
-           barStyle='dark-content'
-        />
-      <Pressable onPress={() => navigation.navigate('OnBoardScreen')} >
-
-        <View style={{ padding: 12}}>
-            <Image source={require('../assets/logo.png')} style={styles.logo} />
+ return (
+    <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
+      <StatusBar
+        backgroundColor={COLORS.white}
+        translucent={false}
+        barStyle="dark-content"
+      />
+      <Pressable onPress={() => navigation.navigate('OnBoardScreen')}>
+        <View style={{ padding: 12 }}>
+          <Image source={require('../assets/logo.png')} style={styles.logo} />
         </View>
-
       </Pressable>
 
-      <View style={styles.header} >
+      <View style={styles.header}>
         <View>
-          <Text style={{color: 'gray'}}>Location</Text>
-          <Text style={{color: COLORS.dark, fontSize: 20, fontWeight: 'bold'}}>Germany</Text>
+          <Text style={{ color: 'gray' }}>Location</Text>
+          <Text style={{ color: COLORS.dark, fontSize: 20, fontWeight: 'bold' }}>Germany</Text>
         </View>
-        {/* <Image 
-           style={styles.profileImage}
-           source={require('../assets/person.jpg')} 
-        /> */}
-        <Pressable 
-              style={{backgroundColor: '#0E4C92', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 5}}
-              onPress={() => navigation.navigate('Contact')}
-              >
-
-           <Text style={{color: 'white', fontWeight: '600', fontSize: 16}} >Contact Us</Text>
-
+        <Pressable
+          style={{ backgroundColor: '#0E4C92', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 5 }}
+          onPress={() => navigation.navigate('Contact')}
+        >
+          <Text style={{ color: 'white', fontWeight: '600', fontSize: 16 }}>Contact Us</Text>
         </Pressable>
         <Pressable onPress={() => navigation.navigate('Login')}>
-
-           <FontAwesome name="user-circle-o" size={40} color="black" />
-
+          <FontAwesome name="user-circle-o" size={40} color="black" />
         </Pressable>
-
-
-
       </View>
 
       <ScrollView>
@@ -91,36 +189,47 @@ const HomeScreen = () => {
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingHorizontal: 20,
-        }} >
+        }}>
           <View style={styles.searchInputContainer}>
-            <FontAwesome name="search" size={24} color="gray" style={{left: -120, top: 12}} />
-            <TextInput placeholder='Search your residency...' style={{top: -12}} />
+            <FontAwesome name="search" size={24} color="gray" style={{ left: -120, top: 12 }} />
+            <TextInput placeholder='Search your residency...' style={{ top: -12 }} />
           </View>
-          <View style={styles.sortBtn} >
-          <MaterialIcons name="tune" size={26} color="white" />
+          <View style={styles.sortBtn}>
+            <MaterialIcons name="tune" size={26} color="white" />
           </View>
         </View>
-        <ListOptions/>
-        <ListCategories/>
+        <ListOptions />
+        <View style={styles.categoryListContainer}>
+          {categoryList.map((category, index) => (
+            <Pressable key={index} onPress={() => setSelectedCategoryIndex(index)}>
+              <Text style={[styles.categoryListText, index === selectedCategoryIndex && styles.activeCategoryListText]}>{category}</Text>
+            </Pressable>
+          ))}
+        </View>
 
-        <FlatList 
-             snapToInterval={width -20}
-             keyExtractor={(_,key) => key.toString()}
-             contentContainerStyle={{paddingLeft: 20, paddingVertical: 20}}
-             showsHorizontalScrollIndicator={false}
-             horizontal
-             data={residencies}
-            //  data={data}
-            //  data={data.slice(0, 8)} // if we want to limit the number of houses displayed
-             renderItem={({item}) => <Card house={item} navigation={navigation} />} 
-             style={{ marginTop:10}}
-             />
+        <FlatList
+          snapToInterval={width - 20}
+          keyExtractor={(_, key) => key.toString()}
+          contentContainerStyle={{ paddingLeft: 2, paddingVertical: 10 }}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          data={filterResidencies()}
+          renderItem={({ item }) => <Card house={item} navigation={navigation} />}
+          style={{ marginTop: 10 }}
+        />
+
+        <View>
+          <Image style={{ width: '100%', height: 300, resizeMode: 'contain', paddingVertical: 5 }} source={require('../assets/urban-image1.jpg')} />
+        </View>
       </ScrollView>
     </SafeAreaView>
-  )
-}
+ );
+};
 
-export default HomeScreen
+export default HomeScreen;
+
+// Styles remain unchanged
+
 
 
 
